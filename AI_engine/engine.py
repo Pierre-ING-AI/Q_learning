@@ -1,8 +1,8 @@
 import numpy as np 
 
 action = ["gauche","droite","haut","bas"]
-hauteur = 5
-largeur = 8
+ligne = 7
+colonne = 10
 
 
 map = [[-50,-50,-50,-50,-50,-50,-50,-50,-50,-50],
@@ -14,14 +14,17 @@ map = [[-50,-50,-50,-50,-50,-50,-50,-50,-50,-50],
        [-50,-50,-50,-50,-50,-50,-50,-50,-50,-50],
        ]
 
-Svalue = [[0,0,0,0,0,0,0,0,],
-         [0,0,0,0,0,0,0,0,],
-         [0,0,0,0,0,0,0,0,],
-         [0,0,0,0,0,0,0,0,],
+Svalue = [[0,0,0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0,0,0]
+         [0,0,0,0,0,0,0,0,0,0]
+         [0,0,0,0,0,0,0,0,0,0]
+         [0,0,0,0,0,0,0,0,0,0],
          ]
 
 print(len(action))
-Qvalues = np.zeros((hauteur,largeur,len(action)))
+Qvalues = np.zeros((ligne,colonne,len(action)))
 iteration = 0
 x = [1,1]
 previous_x = [1,1]
@@ -39,7 +42,7 @@ while iteration <300 :
     elif(chemin) == 2 :x[0] = x[0]-1
     elif(chemin) == 3 :x[0] = x[0]+1
 
-
+    
     Svalue[previous_x[0]][previous_x[1]] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
     Qvalues[previous_x[0]][previous_x[1]][chemin] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
 

@@ -1,7 +1,7 @@
 FROM node:25-alpine3.21
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN RUN npm install
+RUN npm install
 COPY . .
 EXPOSE 3005
-CMD ["node","."]
+CMD ["node","."]   

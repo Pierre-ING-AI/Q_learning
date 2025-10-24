@@ -76,10 +76,70 @@ h1 {
   font-size: 0.5em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #e6e5cd;
   /* cursor: pointer; */
   transition: border-color 0.25s;
 }
+.btn-ia {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  padding:2em;
+  font-size: 0.5em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: red;
+  /* cursor: pointer; */
+  transition: border-color 0.25s;
+}
+
+.btn-bonus {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  padding:2em;
+  font-size: 0.5em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: lightgreen;
+  /* cursor: pointer; */
+  transition: border-color 0.25s;
+}
+
+.btn-sortie {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  padding:2em;
+  font-size: 0.5em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: green;
+  /* cursor: pointer; */
+  transition: border-color 0.25s;
+}
+
+.btn-passage {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  padding:2em;
+  font-size: 0.5em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: lightslategray;
+  /* cursor: pointer; */
+  transition: border-color 0.25s;
+}
+
+.btn-mur {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  padding:2em;
+  font-size: 0.5em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: black;
+  /* cursor: pointer; */
+  transition: border-color 0.25s;
+}
+
 .btn-case:focus{     
     background-color:yellow;    
 }
