@@ -14,15 +14,6 @@ map = [[-50,-50,-50,-50,-50,-50,-50,-50,-50,-50],
        [-50,-50,-50,-50,-50,-50,-50,-50,-50,-50],
        ]
 
-Svalue = [[0,0,0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0,0,0]
-         [0,0,0,0,0,0,0,0,0,0]
-         [0,0,0,0,0,0,0,0,0,0]
-         [0,0,0,0,0,0,0,0,0,0],
-         ]
-
 print(len(action))
 Qvalues = np.zeros((ligne,colonne,len(action)))
 iteration = 0
@@ -42,9 +33,10 @@ while iteration <300 :
     elif(chemin) == 2 :x[0] = x[0]-1
     elif(chemin) == 3 :x[0] = x[0]+1
 
-    
-    Svalue[previous_x[0]][previous_x[1]] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
-    Qvalues[previous_x[0]][previous_x[1]][chemin] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
+
+    Qvalues[previous_x[0]][previous_x[1]][chemin] = map[x[0]][x[1]]+lambd*np.mean(Qvalues[x[0]][x[1]])  
+    ##Svalue[previous_x[0]][previous_x[1]] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
+    ##Qvalues[previous_x[0]][previous_x[1]][chemin] = map[x[0]][x[1]]+lambd*Svalue[x[0]][x[1]]
 
     ##if (((x[0]>5) or (x[0]<1)) or ((x[1]>9) or (x[1]<1))):
     if (map[x[0]][x[1]]==-50):
