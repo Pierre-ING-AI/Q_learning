@@ -21,6 +21,7 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
 
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
 
     volumes:
       - kafka_kraft:/var/lib/kafka/data

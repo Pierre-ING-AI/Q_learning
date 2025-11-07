@@ -41,14 +41,6 @@ Qvalues = np.zeros((ligne,colonne,len(action)))
 Qvalues_charts_value = np.mean(Qvalues, axis=2)
 Qvalues_charts_id = np.argmax(Qvalues, axis=2)
 
-## valeurs
-iteration = 0
-x = [1,1]
-previous_x = [0,1]
-lambd= 0.9
-chemin = 1
-alpha=0.1
-exploration = 3
 ##x[0] = x[0]+1 ## bas
 ##x[0] = x[0]-1 ## haut
 ##x[1] = x[1]+1 ## droite
@@ -69,33 +61,31 @@ consumer_config = {
 consumer = Consumer(consumer_config)
 
 ## synchronisation
+print(f"En attente de la création du topic")
+while not topic_exists("position-reward"):
+    time.sleep(2)  # attend 2 secondes avant de réessayer
+consumer.subscribe(["position-reward"])
+print(f"Topic syncronisé")
 
-while iteration <500 :
+## Init valeurs
+iteration = 0
+x = [1,1]
+previous_x = [0,1]
+lambd= 0.9
+chemin = 1
+alpha=0.1
+exploration = 1
 
-    ## Attente subscrition
-    if (iteration==0):
-        producer.produce(
-            topic="position",
-            value=(json.dumps(x).encode("utf-8"))
-            ##callback=delivery_report
-        )
-        charts = {
-            "qvalues_charts_value":Qvalues_charts_value.tolist(),
-            "qvalues_charts_id":Qvalues_charts_id.tolist(),
-        }
-        charts_value = json.dumps(charts).encode("utf-8")
-        producer.produce(
-            topic="qvalues",
-            value=charts_value
-            ##callback=delivery_report
-        )
-        print(f"En attente de la création du topic")
-        while not topic_exists("position-reward"):
-            time.sleep(2)  # attend 2 secondes avant de réessayer
-        consumer.subscribe(["position-reward"])
-        print(f"Topic syncronisé")
-        print(f"position envoyé {x}")
-        ## send first message
+while iteration <6000 :
+
+    ## send message position
+    value = json.dumps(x).encode("utf-8")
+    producer.produce(
+        topic="position",
+        value=value
+        ##callback=delivery_report
+    )
+    producer.flush()
 
     ## wait for response 
     msg = None
@@ -111,25 +101,31 @@ while iteration <500 :
             order = json.loads(value)
             ##print(order)
 
+    ## actualisation x avec message recu 
     x = order['position']
-    ## Actualisation Qvalue pour prise de decision 
     print(f"position recu {x} | previous_position {previous_x}")
 
+    if(order['reward']==50):
+        exploration = exploration+1;
+    ## Actualisation Qvalue a partir du reward message
     Qvalues[previous_x[0]][previous_x[1]][chemin] = alpha*(order['reward']+lambd*np.max(Qvalues[x[0]][x[1]]) - Qvalues[previous_x[0]][previous_x[1]][chemin])
-    Qvalues_charts_value = np.mean(Qvalues, axis=2)
+    Qvalues_charts_value = np.max(Qvalues, axis=2)
     Qvalues_charts_id = np.argmax(Qvalues, axis=2)
 
-    ## Decision IA
-    if ((iteration<200 or all(val == 0 for val in Qvalues[x[0]][x[1]])) and iteration%exploration==0):
+    ## Mouvement IA
+    ## Exploration ou decision 
+    ##if (iteration%exploration==0):
+    if(all(x == 0 for x in Qvalues[x[0]][x[1]])):
         chemin  = randrange(4)
         Qvalues_charts_id[x[0]][x[1]] = chemin
     else :
         chemin = np.argmax(Qvalues[x[0]][x[1]])
 
+    ## actualisation de la position précédante juste avant le mouvement
     previous_x = x[:]
-
     print(f"position {x} | previous_position {previous_x} | chemin  {chemin}")
 
+    ## mouvement en fonction du chemin choisi
     if chemin == 0 :
         x[1] = x[1]-1
     elif chemin == 1 :
@@ -138,23 +134,14 @@ while iteration <500 :
         x[0] = x[0]-1
     elif chemin == 3 :
         x[0] = x[0]+1
-
     print(f" Mouvement: position {x} | previous_position {previous_x} | chemin  {chemin}")
 
-    ## Send position value to kafka topic position 
-    value = json.dumps(x).encode("utf-8")
+    ## Envoie des charts 
     charts = {
         "qvalues_charts_value":Qvalues_charts_value.tolist(),
         "qvalues_charts_id":Qvalues_charts_id.tolist(),
     }
     charts_value = json.dumps(charts).encode("utf-8")
-    ## send message
-    producer.produce(
-        topic="position",
-        value=value
-        ##callback=delivery_report
-    )
-    print("envoie position")
     producer.produce(
         topic="qvalues",
         value=charts_value
@@ -162,11 +149,7 @@ while iteration <500 :
     )
     print("envoie qvalues")
     producer.flush()
-    
-        ##print(f"📦  pos: {order['position']} reward:{order['reward']}")
-    
-    ##Svalue[previous_x[0]][previous_x[1]] = order['reward']+lambd*Svalue[x[0]][x[1]]
-    ##Qvalues[previous_x[0]][previous_x[1]][chemin] = order['reward']+lambd*Svalue[x[0]][x[1]]
+
     iteration =iteration+1
-    time.sleep(1)
+    time.sleep(0.2)
     

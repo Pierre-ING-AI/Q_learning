@@ -247,7 +247,13 @@ const chartOptions_mean_value = ref({
 //<div v-if="position[0]==c-1 && position[1]==d-1">
 //  <button class="btn-ia"type="button" @click=""></button>
 //</div>
-</script>
+//<div v-else-if="d==-10">
+//  <button class="btn-passage"type="button" @click=""></button>
+//</div>
+//<div v-else-if="d==20">
+//  <button class="btn-bonus"type="button" @click=""></button>
+//</div>
+//</script>
 
 <template>
   <h1>{{ msg }}</h1>
@@ -260,16 +266,13 @@ const chartOptions_mean_value = ref({
             <div v-if="position[0] === i && position[1] === j">
               <button class="btn-ia"type="button" @click=""></button>
             </div>
-            <div v-else-if="d==-50">
+            <div v-else-if="d==-2">
               <button class="btn-mur"type="button" @click=""></button>
             </div>
-            <div v-else-if="d==-10">
+            <div v-else-if="d>0 && d<-2">
               <button class="btn-passage"type="button" @click=""></button>
             </div>
-            <div v-else-if="d==20">
-              <button class="btn-bonus"type="button" @click=""></button>
-            </div>
-            <div v-else-if="d==40">
+            <div v-else-if="d==50">
               <button class="btn-sortie"type="button" @click=""></button>
             </div>
             <div v-else>
