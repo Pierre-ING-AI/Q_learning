@@ -33,31 +33,6 @@ def delivery_report(err, msg):
     else:
         print(f"✅ Delivered {msg.value().decode("utf-8")} to {msg.topic()}")
 
-def topic_exists(topic_name):
-    """Vérifie si le topic existe sur le cluster Kafka"""
-    md = admin_client.list_topics(timeout=5)
-    return topic_name in md.topics
-
-## init producer 
-producer_config = {
-    "bootstrap.servers": "localhost:9092"
-}
-producer = Producer(producer_config)
-
-## init consumer 
-consumer_config = {
-    "bootstrap.servers": "localhost:9092",
-    "group.id": "order-tracker",
-    "auto.offset.reset": "earliest",   # ← lit seulement les nouveaux messages
-}
-consumer = Consumer(consumer_config)
-
-## synchronisation
-print(f"En attente de la création du topic")
-while not topic_exists("position-reward"):
-    time.sleep(2)  # attend 2 secondes avant de réessayer
-consumer.subscribe(["position-reward"])
-print(f"Topic syncronisé")
 
 iteration = 0
 max_iteration =40
@@ -118,8 +93,9 @@ while iteration<max_iteration:
         epsilon = epsilon*np.exp((-0.01*iteration))
         print(f"epsilon:{epsilon}")
         print(f"alpha:{alpha}")
-    if(iteration>10):
-        ## Envoie des charts 
+
+        ##if(iteration>5):
+            ## Envoie des charts 
         charts = {
             "qvalues_charts_value":Qvalues_charts_value.tolist(),
             "qvalues_charts_id":Qvalues_charts_id.tolist(),
@@ -130,12 +106,11 @@ while iteration<max_iteration:
             value=charts_value
             ##callback=delivery_report
         )
-        print("envoie qvalues")
-        producer.flush()
-        if(iteration>20):
-            print("slow")
-            time.sleep(1) 
-        ##if (iteration%3 ==0):
+        ##    producer.flush()
+    if(iteration>30):
+        time.sleep(1) 
+        print("slow")
+    ##if (iteration%3 ==0):
             ##gamma = gamma-((max_iteration/(max_iteration/10))/100)
 
     
