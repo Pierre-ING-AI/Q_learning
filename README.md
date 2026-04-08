@@ -17,8 +17,16 @@ Le projet est découpé en trois services distincts communiquant via un bus d'é
 
 ## 🧠 Spécifications de l'IA (Q-Learning)
 
+L'agent met à jour ses connaissances (la table Q) en utilisant l'équation de Bellman :
+$$Q(s, a) \leftarrow Q(s, a) + \alpha [R + \gamma \max_{a'} Q(s', a') - Q(s, a)]$$
+**Détails des termes :**
+* **$Q(s, a)$** : La valeur actuelle pour l'action $a$ dans l'état $s$.
+* **$\alpha$ (Alpha)** : Le taux d'apprentissage (Learning Rate).
+* **$R$** : La récompense immédiate reçue après l'action.
+* **$\gamma$ (Gamma)** : Le facteur de réduction pour les récompenses futures.
+* **$\max_{a'} Q(s', a')$** : L'estimation de la meilleure valeur future possible dans le prochain état $s'$.
+  
 L'agent apprend selon les paramètres définis dans `ai_enginev3.py` :
-
 * **Récompenses ($R$)** : 
     * Case vide : `0`.
     * Mur : `-10`.
@@ -28,6 +36,7 @@ L'agent apprend selon les paramètres définis dans `ai_enginev3.py` :
     * **Alpha ($\alpha$)** : Démarre à `1` avec une décroissance exponentielle ($e^{-0.0001 \times \text{iteration}}$).
     * **Epsilon ($\epsilon$)** : Démarre à `1` (100% exploration) avec une décroissance similaire pour favoriser l'exploitation au fil du temps.
 * **Espace d'actions** : `["gauche", "droite", "haut", "bas"]`.
+
 
 ---
 
