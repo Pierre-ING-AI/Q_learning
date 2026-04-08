@@ -31,6 +31,14 @@ L'agent apprend selon les paramètres définis dans `ai_enginev3.py` :
 
 ---
 
+## 🎮 Utilisation
+- Générer : Le système crée un labyrinthe aléatoirement.
+- Apprendre : En cliquant sur "Learning", l'IA explore le labyrinthe. Les couleurs changent dans la Heatmap à mesure que les Q-values s'affinent.
+- Visualiser : Les heatmaps ansique le pas progressbar affiche la progression vers la fin de l'entraînement.
+- Exécuter : Une fois entraînée, l'IA peut parcourir le chemin optimal sans exploration.
+
+---
+
 ## 🚀 Installation
 
 ### 1. Infrastructure Kafka
@@ -57,13 +65,24 @@ Lancé sur http://localhost:5173 :
 npm install
 npm run dev
 ```
-Topic,Sens du flux,Format des données (JSON),Description du contenu
-map-data,Backend ➔ IA Engine,"{ ""position"": { ""x"": int, ""y"": int }, ""map"": int, ""endTry"": int, ""mapHeight"": int, ""mapWidth"": int }","Données d'entrée pour l'IA : Envoie la position actuelle du joueur, la nature de la case (mur/vide) et l'état de la session (0: Apprentissage, 3: Run)."
-position,IA Engine ➔ Backend,"{ ""position"": { ""x"": int, ""y"": int }, ""endTry"": int }","Décision de l'IA : Renvoie les nouvelles coordonnées calculées par l'algorithme après avoir choisi une action (Haut, Bas, Gauche, Droite)."
-charts,IA Engine ➔ Backend,"{ ""qvalues_mean"": [[float]], ""policy"": [[int]] }",Données de visualisation : Transmet la matrice des Q-values moyennes pour la Heatmap et la matrice des directions optimales (Policy) pour l'affichage des flèches.
 
-## 🎮 Utilisation
-- Générer : Le système crée un labyrinthe aléatoirement.
-- Apprendre : En cliquant sur "Learning", l'IA explore le labyrinthe. Les couleurs changent dans la Heatmap à mesure que les Q-values s'affinent.
-- Visualiser : Les heatmaps ansique le pas progressbar affiche la progression vers la fin de l'entraînement.
-- Exécuter : Une fois entraînée, l'IA peut parcourir le chemin optimal sans exploration.
+---
+
+## Détail technique du code 
+### 📡 Table des flux de données Kafka
+
+| Topic | Sens du flux | Format des données (JSON) | Description |
+| :--- | :--- | :--- | :--- |
+| **`map-data`** | `Backend` ➔ `IA Engine` | `{"position": {"x": int, "y": int}, "map": int, "endTry": int, ...}` | Envoie la position actuelle, le type de case et l'état (`learning`, `run`, etc.) à l'IA. |
+| **`position`** | `IA Engine` ➔ `Backend` | `{"position": {"x": int, "y": int}, "endTry": int}` | L'IA renvoie la nouvelle position après avoir calculé son mouvement. |
+| **`charts`** | `IA Engine` ➔ `Backend` | `{"qvalues_mean": [[float]], "policy": [[int]]}` | Envoie les matrices de données pour mettre à jour la Heatmap et les flèches de direction. |
+
+
+### 🛠️ Correspondance des états (`endTry`)
+
+| Valeur | État | Action de l'IA |
+| :--- | :--- | :--- |
+| **0** | `Try Learning` | Mode exploration active et mise à jour des Q-values. |
+| **1** | `Restart Try` | Réinitialisation de l'agent après un mur ou la sortie. |
+| **2** | `Stop` | Arrêt des calculs et mise en attente. |
+| **3** | `Run` | Exploitation : l'IA suit le chemin optimal sans apprendre. |
