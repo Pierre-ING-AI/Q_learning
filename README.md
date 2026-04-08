@@ -86,3 +86,10 @@ npm run dev
 | **1** | `Restart Try` | Réinitialisation de l'agent après un mur ou la sortie. |
 | **2** | `Stop` | Arrêt des calculs et mise en attente. |
 | **3** | `Run` | Exploitation : l'IA suit le chemin optimal sans apprendre. |
+
+## Limite
+Projet fonctionnel mais incomplet. Ce qu'il faudrait faire :
+   - Créer des sessions websocket et node 
+   - retoucher l'architecture pour faire tourner plusieurs instances d'IA
+   - Retoucher l architecture pour accelerer l entrainement ( exploitation par kafka sinon python only )
+   - Dockerizer le projetc pour qu'il puisse tourner avec une commande docker
