@@ -57,6 +57,10 @@ Lancé sur http://localhost:5173 :
 npm install
 npm run dev
 ```
+Topic,Sens du flux,Format des données (JSON),Description du contenu
+map-data,Backend ➔ IA Engine,"{ ""position"": { ""x"": int, ""y"": int }, ""map"": int, ""endTry"": int, ""mapHeight"": int, ""mapWidth"": int }","Données d'entrée pour l'IA : Envoie la position actuelle du joueur, la nature de la case (mur/vide) et l'état de la session (0: Apprentissage, 3: Run)."
+position,IA Engine ➔ Backend,"{ ""position"": { ""x"": int, ""y"": int }, ""endTry"": int }","Décision de l'IA : Renvoie les nouvelles coordonnées calculées par l'algorithme après avoir choisi une action (Haut, Bas, Gauche, Droite)."
+charts,IA Engine ➔ Backend,"{ ""qvalues_mean"": [[float]], ""policy"": [[int]] }",Données de visualisation : Transmet la matrice des Q-values moyennes pour la Heatmap et la matrice des directions optimales (Policy) pour l'affichage des flèches.
 
 ## 🎮 Utilisation
 - Générer : Le système crée un labyrinthe aléatoirement.
