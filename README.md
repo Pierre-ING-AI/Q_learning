@@ -1,4 +1,4 @@
-# State_Value_Algorithm
+# Qlearning
 
 ## Introduction 
 <img width="1059" height="600" alt="image" src="https://github.com/user-attachments/assets/3a11bda0-0ccd-4fd7-84cc-0963eaa8d047" />
