@@ -18,7 +18,7 @@ Le projet est découpé en trois services distincts communiquant via un bus d'é
 ## 🧠 Spécifications de l'IA (Q-Learning)
 
 L'agent met à jour ses connaissances (la table Q) en utilisant l'équation de Bellman :
-$$Q(s, a) \leftarrow Q(s, a) + \alpha [R + \gamma \max_{a'} Q(s', a') - Q(s, a)]$$
+ - $$Q(s, a) \leftarrow Q(s, a) + \alpha [R + \gamma \max_{a'} Q(s', a') - Q(s, a)]$$
 **Détails des termes :**
 * **$Q(s, a)$** : La valeur actuelle pour l'action $a$ dans l'état $s$.
 * **$\alpha$ (Alpha)** : Le taux d'apprentissage (Learning Rate).
