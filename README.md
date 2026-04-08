@@ -37,3 +37,30 @@ L'agent apprend selon les paramètres définis dans `ai_enginev3.py` :
 Lancer le conteneur Kafka sur le port `9092` :
 ```bash
 docker-compose up -d
+```
+### 2. Serveur Node.js (Backend)
+Configure le pont entre Kafka et le Web sur le port 3005 :
+# Dans le dossier backend
+```bash
+npm install
+node index.js
+```
+### 3. Moteur IA (Python)
+Le cerveau de l'application :
+```bash
+pip install numpy confluent-kafka
+python ai_enginev3.py
+```
+### 4. Interface Web (Vue.js)
+Lancé sur http://localhost:5173 :
+```bash
+# Dans le dossier frontend
+npm install
+npm run dev
+```
+
+## 🎮 Utilisation
+- Générer : Le système crée un labyrinthe aléatoirement.
+- Apprendre : En cliquant sur "Learning", l'IA explore le labyrinthe. Les couleurs changent dans la Heatmap à mesure que les Q-values s'affinent.
+- Visualiser : Les heatmaps ansique le pas progressbar affiche la progression vers la fin de l'entraînement.
+- Exécuter : Une fois entraînée, l'IA peut parcourir le chemin optimal sans exploration.
