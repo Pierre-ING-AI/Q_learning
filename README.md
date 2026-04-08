@@ -2,7 +2,7 @@
 
 # 🤖 Maze Q-Learning Project
 
-Ce projet est une plateforme de démonstration interactive de **Reinforcement Learning** (Apprentissage par renforcement). Il permet de visualiser comment un agent IA apprend à résoudre un labyrinthe en temps réel via une architecture distribuée.
+Ce projet est une plateforme de démonstration interactive de **Reinforcement Learning**. Il permet de visualiser comment un agent IA apprend à résoudre un labyrinthe en temps réel via une architecture distribuée.
 
 ## 🏗️ Architecture du Système
 
