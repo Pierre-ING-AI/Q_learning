@@ -39,8 +39,7 @@ Lancer le conteneur Kafka sur le port `9092` :
 docker-compose up -d
 ```
 ### 2. Serveur Node.js (Backend)
-Configure le pont entre Kafka et le Web sur le port 3005 :
-# Dans le dossier backend
+Configure le pont entre Kafka et le Web sur le port 3005 
 ```bash
 npm install
 node index.js
